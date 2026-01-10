@@ -24,7 +24,7 @@
           "fyp",
           "clash"
         ],
-        "releaseNotes": "Update to Expo SDK 52 and improve universal links",
+        "releaseNotes": "Support App Clips in iOS 17",
         "marketingUrl": "https://pillarvalley.expo.app/",
         "promoText": "Immerse yourself in a suave world of zen",
         "supportUrl": "https://github.com/EvanBacon/Expo-Pillar-Valley/issues",
@@ -43,23 +43,24 @@
       "ENTERTAINMENT"
     ],
     "advisory": {
-      "koreaAgeRatingOverride": "NONE",
       "ageRatingOverride": "NONE",
       "alcoholTobaccoOrDrugUseOrReferences": "NONE",
       "contests": "NONE",
+      "gambling": false,
       "gamblingSimulated": "NONE",
       "horrorOrFearThemes": "NONE",
+      "kidsAgeBand": null,
+      "koreaAgeRatingOverride": "NONE",
+      "lootBox": false,
       "matureOrSuggestiveThemes": "NONE",
       "medicalOrTreatmentInformation": "NONE",
       "profanityOrCrudeHumor": "NONE",
       "sexualContentGraphicAndNudity": "NONE",
       "sexualContentOrNudity": "NONE",
+      "unrestrictedWebAccess": false,
       "violenceCartoonOrFantasy": "NONE",
       "violenceRealistic": "NONE",
-      "violenceRealisticProlongedGraphicOrSadistic": "NONE",
-      "gambling": false,
-      "unrestrictedWebAccess": false,
-      "kidsAgeBand": null
+      "violenceRealisticProlongedGraphicOrSadistic": "NONE"
     },
     "review": {
       "firstName": "Evan",
@@ -67,7 +68,7 @@
       "email": "baconbrix@gmail.com",
       "phone": "2243030301",
       "demoRequired": false,
-      "notes": "I <3 U"
+      "notes": "Reduced the min version for app clips"
     }
   }
 }
