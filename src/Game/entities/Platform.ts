@@ -1,7 +1,7 @@
 import {
   Color,
   Mesh,
-  CylinderBufferGeometry,
+  CylinderGeometry,
   Material,
   MeshPhongMaterial,
 } from "three";
@@ -27,7 +27,7 @@ const pointForGem = (
 
 class PlatformMesh extends Mesh {
   constructor(size: number, material: Material) {
-    super(new CylinderBufferGeometry(size, size * 0.2, 1000, 24), material);
+    super(new CylinderGeometry(size, size * 0.2, 1000, 24), material);
   }
 
   set y(y: number) {

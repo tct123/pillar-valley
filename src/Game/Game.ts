@@ -2,6 +2,7 @@ import * as Haptics from "@/lib/expo-haptics";
 
 import * as THREE from "three";
 import { DirectionalLight, HemisphereLight } from "three";
+import type { Renderer } from "three/webgpu";
 
 import GameObject from "./GameObject";
 import GameScene from "./GameScene";
@@ -150,8 +151,7 @@ class PlayerGroupObject extends GameObject {
     distance: number,
     angle: number
   ): [number, number] {
-    // @ts-ignore
-    const radians = THREE.Math.degToRad(angle);
+    const radians = THREE.MathUtils.degToRad(angle);
     return [
       this.getStaticItem().x - distance * Math.sin(radians),
       this.getStaticItem().z + distance * Math.cos(radians),
@@ -265,8 +265,7 @@ class PillarGroupObject extends GameObject {
       Settings.angleRange[0] + range,
       Settings.angleRange[1] + range
     );
-    // @ts-ignore
-    const radians = THREE.Math.degToRad(randomAngle);
+    const radians = THREE.MathUtils.degToRad(randomAngle);
     return radians;
   }
 
@@ -321,7 +320,7 @@ class Game extends GameObject {
   playerObject?: PlayerGroupObject;
   scene?: GameScene;
 
-  constructor(width: number, height: number, public renderer: THREE.Renderer) {
+  constructor(width: number, height: number, public renderer: Renderer) {
     super({});
     this._game = this;
     this._width = width;

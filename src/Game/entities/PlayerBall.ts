@@ -1,4 +1,4 @@
-import { Mesh, CylinderBufferGeometry, MeshPhongMaterial } from "three";
+import { Mesh, CylinderGeometry, MeshPhongMaterial } from "three";
 import Colors from "../../constants/Colors";
 import Settings from "../../constants/Settings";
 import Circle from "../Circle";
@@ -7,7 +7,7 @@ import { Easing } from "react-native";
 import { RNAnimator } from "../utils/animator";
 
 const radius = 26.6666667 / 2;
-const PlayerBallGeom = new CylinderBufferGeometry(radius, radius, 9, 24);
+const PlayerBallGeom = new CylinderGeometry(radius, radius, 9, 24);
 const PlayerBallMaterial = new MeshPhongMaterial({
   color: Colors.gold,
 });

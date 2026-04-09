@@ -19,8 +19,13 @@ export default class Gem extends GameObject {
 
   getGemGeometry = (): CylinderGeometry => {
     const geometry = new CylinderGeometry(0.6, 1, 0.3, 7, 1);
-    geometry.vertices[geometry.vertices.length - 1].y = -1;
-    geometry.verticesNeedUpdate = true;
+    // Pull the last vertex of the position attribute down to y = -1 to give the
+    // gem its pointed underside. Pre-r125 used `geometry.vertices`; on modern
+    // BufferGeometry we mutate the position attribute directly.
+    const position = geometry.attributes.position;
+    const lastIndex = position.count - 1;
+    position.setY(lastIndex, -1);
+    position.needsUpdate = true;
     return geometry;
   };
 

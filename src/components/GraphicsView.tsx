@@ -1,4 +1,3 @@
-import { ExpoWebGLRenderingContext, GLView } from "expo-gl";
 import invariant from "invariant";
 import React from "react";
 import {
@@ -7,7 +6,11 @@ import {
   PixelRatio,
   StyleSheet,
 } from "react-native";
+import { Canvas, type CanvasRef, type RNCanvasContext } from "react-native-wgpu";
 import * as THREE from "three";
+import type { Renderer } from "three/webgpu";
+
+import { makeWebGPURenderer } from "@/lib/webgpu-renderer";
 
 export type ResizeEvent = {
   x: number;
@@ -17,8 +20,9 @@ export type ResizeEvent = {
   scale: number;
   pixelRatio: number;
 };
-export type GLEvent = {
-  gl: ExpoWebGLRenderingContext;
+
+export type RendererEvent = {
+  renderer: Renderer;
   width: number;
   height: number;
   pixelRatio: number;
@@ -28,13 +32,18 @@ type Props = {
   onResize?: (event: ResizeEvent) => void;
   isPaused: boolean;
   onShouldReloadContext: boolean;
-  onContextCreate: (glEvent: GLEvent) => void;
+  onContextCreate: (event: RendererEvent) => void | Promise<void>;
   onRender: (deltaTime: number, time: number) => void;
 };
 
 export default class GraphicsView extends React.Component<Props> {
-  gl: ExpoWebGLRenderingContext | null = null;
+  gpuContext: RNCanvasContext | null = null;
+  renderer: Renderer | null = null;
+  canvasRef = React.createRef<CanvasRef>();
   rafID?: number;
+  layoutWidth = 0;
+  layoutHeight = 0;
+  initializing = false;
 
   static defaultProps = {
     onShouldReloadContext: process.env.EXPO_OS !== "web",
@@ -51,7 +60,8 @@ export default class GraphicsView extends React.Component<Props> {
   }
 
   destroy = () => {
-    this.gl = null;
+    this.gpuContext = null;
+    this.renderer = null;
     if (this.rafID) {
       cancelAnimationFrame(this.rafID);
     }
@@ -62,50 +72,66 @@ export default class GraphicsView extends React.Component<Props> {
       layout: { x, y, width, height },
     },
   }: LayoutChangeEvent) => {
-    if (!this.gl) {
+    this.layoutWidth = width;
+    this.layoutHeight = height;
+
+    if (!this.gpuContext && !this.initializing && this.canvasRef.current) {
+      this._initialize();
       return;
     }
-    if (this.props.onResize) {
-      const scale = PixelRatio.get();
-      this.props.onResize({ x, y, width, height, scale, pixelRatio: scale });
+
+    if (this.renderer) {
+      this.renderer.setSize(width, height);
+      if (this.props.onResize) {
+        const scale = PixelRatio.get();
+        this.props.onResize({ x, y, width, height, scale, pixelRatio: scale });
+      }
     }
   };
 
-  time = 0;
+  _initialize = async () => {
+    if (this.initializing || this.gpuContext || !this.canvasRef.current) return;
+    this.initializing = true;
 
-  _onContextCreate = async (gl) => {
-    this.gl = gl;
+    const ctx = this.canvasRef.current.getContext("webgpu");
+    invariant(ctx, "react-native-wgpu: failed to obtain WebGPU context");
+    this.gpuContext = ctx;
 
     const { onContextCreate, onRender } = this.props;
-
     invariant(
       onRender,
-      "expo-graphics: GraphicsView.onContextCreate(): `onRender` must be defined."
+      "GraphicsView._initialize: `onRender` must be defined."
     );
     invariant(
       onContextCreate,
-      "expo-graphics: GraphicsView.onContextCreate(): `onContextCreate` must be defined."
+      "GraphicsView._initialize: `onContextCreate` must be defined."
     );
 
     const scale = PixelRatio.get();
+    const width = this.layoutWidth || (ctx.canvas as any).width / scale;
+    const height = this.layoutHeight || (ctx.canvas as any).height / scale;
+
+    const renderer = makeWebGPURenderer(ctx);
+    renderer.setPixelRatio(scale);
+    renderer.setSize(width, height, false);
+    // WebGPURenderer requires async init before first frame.
+    await renderer.init();
+    this.renderer = renderer;
+
     await onContextCreate({
-      gl,
-      width: gl.drawingBufferWidth / scale,
-      height: gl.drawingBufferHeight / scale,
-      scale,
+      renderer,
+      width,
+      height,
       pixelRatio: scale,
-      // ...props,
     });
+
     const clock = new THREE.Clock();
     const render = () => {
-      if (this.gl) {
-        this.rafID = requestAnimationFrame(render);
-
-        if (!this.props.isPaused) {
-          onRender(clock.getDelta(), clock.getElapsedTime());
-          // NOTE: At the end of each frame, notify `Expo.GLView` with the below
-          gl.endFrameEXP();
-        }
+      if (!this.gpuContext) return;
+      this.rafID = requestAnimationFrame(render);
+      if (!this.props.isPaused) {
+        onRender(clock.getDelta(), clock.getElapsedTime());
+        this.gpuContext.present();
       }
     };
     render();
@@ -113,11 +139,11 @@ export default class GraphicsView extends React.Component<Props> {
 
   render() {
     return (
-      <GLView
+      <Canvas
         key={this.state.id}
+        ref={this.canvasRef}
         onLayout={this._onLayout}
         style={styles.container}
-        onContextCreate={this._onContextCreate}
       />
     );
   }
@@ -126,11 +152,5 @@ export default class GraphicsView extends React.Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  errorContainer: {
-    backgroundColor: "red",
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
   },
 });

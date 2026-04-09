@@ -1,38 +1,10 @@
 import { Asset } from "expo-asset";
-// import * as FileSystem from "expo-file-system";
 import { Easing } from "react-native";
 import * as THREE from "three";
 
 import GameObject from "./GameObject";
 import MotionObserver from "./MotionObserver";
 import { RNAnimator } from "./utils/animator";
-
-// bundled asset uri's become `asset://...` in production build, but expo-gl
-// cannot handle them, https://github.com/expo/expo/issues/2693
-// this workaround copies them to a known path files so we can use a regular
-// `file://...` uri instead.
-// async function copyAssetToCacheAsync(
-//   assetModule: number,
-//   localFilename: string
-// ): Promise<Asset> {
-//   const asset = Asset.fromModule(assetModule);
-//   await asset.downloadAsync();
-//   if (process.env.EXPO_OS !== "android") {
-//     return asset;
-//   }
-//   const localUri = `${FileSystem.cacheDirectory}asset_${localFilename}`;
-//   const fileInfo = await FileSystem.getInfoAsync(localUri, { size: false });
-//   if (!fileInfo.exists) {
-//     console.log(`copyAssetToCacheAsync ${asset.localUri} -> ${localUri}`);
-//     await FileSystem.copyAsync({
-//       from: asset.localUri!,
-//       to: localUri,
-//     });
-//   }
-//   asset.localUri = localUri;
-
-//   return asset;
-// }
 
 class FlatMaterial extends THREE.MeshPhongMaterial {
   constructor(props: any) {
@@ -43,90 +15,33 @@ class FlatMaterial extends THREE.MeshPhongMaterial {
   }
 }
 
-// import registry from '@react-native/assets-registry/registry';
-
-// function assetToPath(source: number): string {
-//   // get the URI from the packager
-//   const asset = registry.getAssetByID(source);
-//   if (asset == null) {
-//     throw new Error(
-//       `Asset with ID "${source}" could not be found. Please check the image source or packager.`
-//     );
-//   }
-//   return path.join(
-//     __dirname,
-//     process.env.NODE_ENV === 'production' ? '../../../' : '',
-//     decodeURIComponent(
-//       asset.httpServerLocation.replace('/assets/?unstable_path=', '')
-//     ),
-//     `${asset.name}.${asset.type}`
-//   );
-// }
-
-// import { Asset } from 'expo-asset';
-class MetroAssetTextureLoader extends THREE.Loader {
-  load(
-    moduleId: number,
-    onLoad?: (texture: THREE.Texture) => void,
-    onProgress?: (event: ProgressEvent<EventTarget>) => void,
-    onError?: (error: any) => void
-  ) {
-    const texture = new THREE.Texture();
-    const loader = new THREE.ImageLoader(this.manager);
-
-    // Resolves the metro asset object to a URL.
-    Asset.fromModule(moduleId)
-      .downloadAsync()
-      .then((asset) => {
-        // On web, do whatever the THREE.ImageLoader does.
-        if (process.env.EXPO_OS === "web") {
-          loader.setCrossOrigin(this.crossOrigin);
-          loader.setPath(this.path);
-          loader.load(
-            asset.localUri!,
-            function (image) {
-              texture.image = image;
-              texture.needsUpdate = true;
-
-              if (onLoad !== undefined) {
-                onLoad(texture);
-              }
-            },
-            onProgress,
-            onError
-          );
-        } else {
-          // Use a data texture
-          texture.image = {
-            data: asset,
-            width: asset.width,
-            height: asset.height,
-          };
-          // @ts-expect-error: Forces passing to `gl.texImage2D(...)` verbatim
-          texture.isDataTexture = true;
-          texture.needsUpdate = true;
-
-          if (onLoad !== undefined) {
-            onLoad(texture);
-          }
-        }
-      })
-      .catch(onError);
-
-    return texture;
+/**
+ * Decodes a bundled PNG into a `THREE.Texture` whose `image` is an
+ * `ImageBitmap`. `react-native-wgpu` polyfills `fetch`/`Blob`/`createImageBitmap`
+ * on native, so this same code path works on iOS, Android, and web.
+ */
+async function loadAssetTextureAsync(moduleId: number): Promise<THREE.Texture> {
+  const asset = await Asset.fromModule(moduleId).downloadAsync();
+  const uri = asset.localUri ?? asset.uri;
+  if (!uri) {
+    throw new Error(`Failed to resolve asset uri for module ${moduleId}`);
   }
-}
 
-const textureLoader = new MetroAssetTextureLoader();
+  const response = await fetch(uri);
+  const blob = await response.blob();
+  const bitmap = await createImageBitmap(blob);
+
+  const texture = new THREE.Texture(bitmap as unknown as HTMLImageElement);
+  texture.needsUpdate = true;
+  return texture;
+}
 
 async function loadMenuMaterialAsync(
   asset: any,
   color: number
 ): Promise<THREE.Material[]> {
-  const image = new THREE.MeshBasicMaterial({
-    // NOTE: This might not work on native, but Expo GL doesn't seem to load in the simulator and my cord is on the other side of the room.
-    map: textureLoader.load(asset), // await loadTextureAsync({ asset }),
-  });
+  const texture = await loadAssetTextureAsync(asset);
+  const image = new THREE.MeshBasicMaterial({ map: texture });
 
   const material = new FlatMaterial({ color });
 
@@ -140,7 +55,7 @@ async function makeMenuPillarAsync(asset: any, color = 0xdb7048) {
   const materials = await loadMenuMaterialAsync(asset, color);
 
   const mesh = new THREE.Mesh(
-    new THREE.BoxBufferGeometry(100, 1000, depth, 1, 1, 1),
+    new THREE.BoxGeometry(100, 1000, depth, 1, 1, 1),
     materials
   );
   mesh.position.y = -500;
