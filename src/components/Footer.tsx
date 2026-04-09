@@ -1,7 +1,7 @@
 import * as Haptics from "@/lib/expo-haptics";
 import { router, useNavigation } from "expo-router";
 import React from "react";
-import { Button, Platform, StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -55,7 +55,7 @@ function Footer() {
         onPress={() => {
           TargetLinksModule.openAppClipDisplay();
         }}
-      />
+      />,
     );
   }
   if (process.env.EXPO_OS !== "web") {
