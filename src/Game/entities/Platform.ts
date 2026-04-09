@@ -1,8 +1,9 @@
 import {
+  BufferGeometry,
   Color,
-  Mesh,
-  CylinderGeometry,
+  Float32BufferAttribute,
   Material,
+  Mesh,
   MeshPhongMaterial,
 } from "three";
 
@@ -19,23 +20,99 @@ const radius = 33.3333333 / 2;
 
 const pointForGem = (
   radius: number,
-  angle: number
+  angle: number,
 ): { x: number; y: number } => ({
   x: radius * Math.cos(angle),
   y: radius * Math.sin(angle),
 });
 
-// One unit-cylinder geometry shared by every platform — we vary the visible
+// One unit-prism geometry shared by every platform — we vary the visible
 // size by scaling the mesh per-instance. The taper ratio (top radius / bottom
 // radius) is fixed at 1 / 0.2, matching the original look. Sharing keeps
 // pillar churn from re-uploading vertex buffers to the GPU.
 const PLATFORM_TAPER = 0.2;
 const PLATFORM_HEIGHT = 1000;
-const sharedPlatformGeometry = new CylinderGeometry(
+// Fraction of each hex side consumed by the chamfer at one end (0 = sharp
+// corners, 0.5 = fully bevelled away). A small value gives just enough bevel
+// to catch a highlight along the vertical edge.
+const PLATFORM_BEVEL = 0.05;
+
+// Beveled hexagonal frustum: 6 main side faces + 6 narrow chamfer faces
+// running the full height. With `flatShading` on the material, each face
+// resolves as a single shade so all 12 sides read clearly.
+function createBeveledHexFrustum(
+  topRadius: number,
+  bottomRadius: number,
+  height: number,
+  bevel: number,
+): BufferGeometry {
+  const positions: number[] = [];
+  const indices: number[] = [];
+
+  const addRing = (y: number, scale: number) => {
+    for (let i = 0; i < 6; i++) {
+      const a1 = (i * Math.PI) / 3;
+      const a2 = ((i + 1) * Math.PI) / 3;
+      const c1x = Math.cos(a1) * scale;
+      const c1z = Math.sin(a1) * scale;
+      const c2x = Math.cos(a2) * scale;
+      const c2z = Math.sin(a2) * scale;
+      // Two chamfer vertices along the side connecting hexagon corners i and
+      // i+1, set inward from each corner by `bevel` of the side length.
+      positions.push(
+        c1x * (1 - bevel) + c2x * bevel,
+        y,
+        c1z * (1 - bevel) + c2z * bevel,
+      );
+      positions.push(
+        c2x * (1 - bevel) + c1x * bevel,
+        y,
+        c2z * (1 - bevel) + c1z * bevel,
+      );
+    }
+  };
+
+  // Top ring: indices 0..11; Bottom ring: indices 12..23.
+  addRing(height / 2, topRadius);
+  addRing(-height / 2, bottomRadius);
+
+  // 12 quad side faces (alternating main face / chamfer face), wound CCW
+  // when viewed from outside the prism.
+  for (let i = 0; i < 12; i++) {
+    const next = (i + 1) % 12;
+    const a = i;
+    const b = next;
+    const c = i + 12;
+    const d = next + 12;
+    indices.push(a, b, c, b, d, c);
+  }
+
+  // Top cap (fan around a center vertex), wound CCW from above.
+  const topCenter = positions.length / 3;
+  positions.push(0, height / 2, 0);
+  for (let i = 0; i < 12; i++) {
+    indices.push(topCenter, (i + 1) % 12, i);
+  }
+
+  // Bottom cap, wound CCW from below.
+  const bottomCenter = positions.length / 3;
+  positions.push(0, -height / 2, 0);
+  for (let i = 0; i < 12; i++) {
+    indices.push(bottomCenter, 12 + i, 12 + ((i + 1) % 12));
+  }
+
+  const geom = new BufferGeometry();
+  geom.setAttribute("position", new Float32BufferAttribute(positions, 3));
+  geom.setIndex(indices);
+  geom.computeVertexNormals();
+  return geom;
+}
+
+const sharedPlatformGeometry = createBeveledHexFrustum(
   1,
   PLATFORM_TAPER,
   PLATFORM_HEIGHT,
-  24
+  PLATFORM_BEVEL,
 );
 
 class PlatformMesh extends Mesh {
@@ -99,7 +176,10 @@ class Platform extends GameObject {
 
   loadAsync = async (scene: any) => {
     this.radius = randomRange(radius, radius * 1.9);
-    this.platformMaterial = new MeshPhongMaterial({ color: this.writeColor() });
+    this.platformMaterial = new MeshPhongMaterial({
+      color: this.writeColor(),
+      flatShading: true,
+    });
     this.mesh = new PlatformMesh(this.radius, this.platformMaterial);
     this.mesh.y = -500;
     this.add(this.mesh);
@@ -165,7 +245,7 @@ class Platform extends GameObject {
           {
             delay: 1000 * ((i + 1) * 0.1),
             onComplete: () => (gem.canBeCollected = true),
-          }
+          },
         );
       }
     }
@@ -177,7 +257,7 @@ class Platform extends GameObject {
         const gem = this.gems[i];
         const { x, y } = pointForGem(
           Settings.ballDistance * 1.5,
-          gem.driftAngle
+          gem.driftAngle,
         );
 
         RNAnimator.to(gem, 400, {
@@ -216,7 +296,7 @@ class Platform extends GameObject {
         delay: randomRange(0, 70),
         easing: Easing.in(Easing.quad),
         onComplete: () => this.destroy(),
-      }
+      },
     );
   };
 
@@ -228,7 +308,7 @@ class Platform extends GameObject {
       this.mesh,
       randomRange(500, 700),
       { y: -500 },
-      { easing: Easing.out(Easing.cubic) }
+      { easing: Easing.out(Easing.cubic) },
     );
   };
 
@@ -246,9 +326,10 @@ class Platform extends GameObject {
       {
         onUpdate: () => {
           // Mutate the existing material color in place — no allocations.
-          if (this.platformMaterial) this.writeColor(this.platformMaterial.color);
+          if (this.platformMaterial)
+            this.writeColor(this.platformMaterial.color);
         },
-      }
+      },
     );
   };
 
