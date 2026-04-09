@@ -1,5 +1,4 @@
 import { Mesh, CylinderGeometry, MeshPhongMaterial } from "three";
-import Colors from "../../constants/Colors";
 import Settings from "../../constants/Settings";
 import Circle from "../Circle";
 import GameObject from "../GameObject";
@@ -8,8 +7,17 @@ import { RNAnimator } from "../utils/animator";
 
 const radius = 26.6666667 / 2;
 const PlayerBallGeom = new CylinderGeometry(radius, radius, 9, 24);
+// Vibrant light-blue puck with a soft inner glow + a touch of specular so the
+// player reads as the most playful, alive thing on screen against the warm
+// pillar palette. Flat shading gives the 24-segment cylinder crisp facets
+// that catch the light like a cut gem.
 const PlayerBallMaterial = new MeshPhongMaterial({
-  color: Colors.gold,
+  color: 0x6ec6ff,
+  emissive: 0x3aa0ff,
+  emissiveIntensity: 0.4,
+  specular: 0xe0f2ff,
+  shininess: 90,
+  flatShading: true,
 });
 
 class PlayerBall extends GameObject {
