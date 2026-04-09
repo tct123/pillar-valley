@@ -17,9 +17,6 @@ function SongClient() {
     } else {
       player.pause();
     }
-    return () => {
-      player.pause();
-    };
   }, [enabled, player]);
 
   return null;
