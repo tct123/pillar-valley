@@ -147,7 +147,11 @@ function InnerLayout() {
             },
           }}
         >
-          <Stack.Screen name="index" options={{ header: () => null }} />
+          <Stack.Screen
+            name="index"
+            dangerouslySingular
+            options={{ header: () => null }}
+          />
           <Stack.Screen
             name="challenges"
             options={{
