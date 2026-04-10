@@ -11,6 +11,12 @@ import { WebGPURenderer } from "three/webgpu";
  * renderer can read width/height and ignore DOM-only APIs without crashing.
  */
 export class ReactNativeCanvas {
+  // No-op stand-in for the DOM `HTMLCanvasElement.style` object. Three.js's
+  // `Renderer.setSize(w, h, updateStyle = true)` writes `domElement.style.width`
+  // when called with the default args, so without this any resize would crash
+  // with "Cannot set properties of undefined (setting 'width')".
+  style: Record<string, unknown> = {};
+
   constructor(private canvas: NativeCanvas) {}
 
   get width() {

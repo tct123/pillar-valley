@@ -12,8 +12,8 @@ const PlayerBallGeom = new CylinderGeometry(radius, radius, 9, 24);
 // pillar palette. Flat shading gives the 24-segment cylinder crisp facets
 // that catch the light like a cut gem.
 const PlayerBallMaterial = new MeshPhongMaterial({
-  color: 0x6ec6ff,
-  emissive: 0x3aa0ff,
+  color: 0xf9dd9a,
+  emissive: 0xf6d554,
   emissiveIntensity: 0.4,
   specular: 0xe0f2ff,
   shininess: 90,
@@ -53,7 +53,7 @@ class PlayerBall extends GameObject {
       },
       {
         onComplete,
-      }
+      },
     );
   };
 
@@ -75,7 +75,7 @@ class PlayerBall extends GameObject {
       },
       {
         easing: Easing.out(Easing.cubic),
-      }
+      },
     );
 
     RNAnimator.to(
@@ -89,7 +89,7 @@ class PlayerBall extends GameObject {
         onComplete: () => {
           this.circle?.reset();
         },
-      }
+      },
     );
   };
 }

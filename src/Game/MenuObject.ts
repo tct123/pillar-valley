@@ -157,6 +157,11 @@ export default class MenuObject extends GameObject {
         delay: 200,
         onComplete: async () => {
           this.motionObserver.stop();
+          // Once the title has fully dropped, take it out of the render
+          // tree entirely. The new height-based fog only goes fully opaque
+          // around y ≈ -650, so without this the title pillars would still
+          // poke through the warm cloud bank in the background.
+          this.visible = false;
           onComplete();
         },
       }

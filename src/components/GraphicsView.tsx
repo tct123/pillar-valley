@@ -81,7 +81,10 @@ export default class GraphicsView extends React.Component<Props> {
     }
 
     if (this.renderer) {
-      this.renderer.setSize(width, height);
+      // Pass `false` for `updateStyle`: there is no DOM `style` to update on
+      // the native canvas, and three.webgpu's setSize would otherwise try to
+      // write `domElement.style.width` and crash.
+      this.renderer.setSize(width, height, false);
       if (this.props.onResize) {
         const scale = PixelRatio.get();
         this.props.onResize({ x, y, width, height, scale, pixelRatio: scale });
