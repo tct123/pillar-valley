@@ -34,6 +34,9 @@
         "subtitle": "Endless One-Tap Zen Arcade",
         "privacyPolicyUrl": "https://pillarvalley.expo.app/privacy",
         "privacyChoicesUrl": "https://pillarvalley.expo.app/privacy",
+        "previews": {
+          "IPHONE_67": "store/apple/preview/en-US/APP_IPHONE_67/01.mp4"
+        },
         "screenshots": {
           "APP_IPAD_PRO_3GEN_129": [
             "store/apple/screenshot/en-US/APP_IPAD_PRO_3GEN_129/01.png",
@@ -88,8 +91,7 @@
       "lastName": "Bacon",
       "email": "baconbrix@gmail.com",
       "phone": "2243030301",
-      "demoRequired": false,
-      "notes": ""
+      "demoRequired": false
     },
     "appClip": {
       "defaultExperience": {
