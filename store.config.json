@@ -34,18 +34,20 @@
         "subtitle": "Endless One-Tap Zen Arcade",
         "privacyPolicyUrl": "https://pillarvalley.expo.app/privacy",
         "privacyChoicesUrl": "https://pillarvalley.expo.app/privacy",
-        "previews": {
-          "IPHONE_67": "store/apple/preview/en-US/APP_IPHONE_67/01.mp4"
-        },
         "screenshots": {
           "APP_IPAD_PRO_3GEN_129": [
-            "store/apple/screenshot/en-US/APP_IPAD_PRO_3GEN_129/01.png",
-            "store/apple/screenshot/en-US/APP_IPAD_PRO_3GEN_129/02.png"
+            "store/apple/screenshot/en-US/APP_IPAD_PRO_3GEN_129/01.png"
           ],
           "APP_IPHONE_67": [
             "store/apple/screenshot/en-US/APP_IPHONE_67/01.png",
             "store/apple/screenshot/en-US/APP_IPHONE_67/02.png"
           ]
+        },
+        "previews": {
+          "IPHONE_67": {
+            "path": "store/apple/preview/en-US/IPHONE_67/01.mp4",
+            "previewFrameTimeCode": "00:00:05:01"
+          }
         }
       }
     },
