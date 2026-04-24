@@ -2,8 +2,8 @@ import * as QuickActions from "expo-quick-actions";
 import { useQuickActionRouting, RouterAction } from "expo-quick-actions/router";
 import React from "react";
 
-import { logEvent } from "@/lib/Analytics";
-import { icons, useDynamicAppIcon } from "@/components/DynamicIconContext";
+import { logEvent } from "../lib/Analytics";
+import { icons, useDynamicAppIcon } from "../components/DynamicIconContext";
 import { Platform } from "react-native";
 
 export function useDynamicQuickActions() {

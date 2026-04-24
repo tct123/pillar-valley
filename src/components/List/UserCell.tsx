@@ -9,7 +9,7 @@ export default class UserCell extends React.Component {
     item: {},
     index: 0,
     onPress: () => {
-      alert("must override UserCell.onPress"); // eslint-disable-line
+      alert("must override UserCell.onPress");
     },
   };
   onPress = () => {

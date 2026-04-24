@@ -79,7 +79,7 @@
     "babel-eslint": "10.0.3",
     "bplist-creator": "^0.1.1",
     "bplist-parser": "^0.3.2",
-    "eslint": "^8.41.0",
+    "eslint": "^9.0.0",
     "eslint-config-expo": "~55.0.0",
     "eslint-config-universe": "^11.2.0",
     "eslint-plugin-bacon": "^0.0.3",

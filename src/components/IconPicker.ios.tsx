@@ -1,10 +1,10 @@
-import * as Haptics from "@/lib/expo-haptics";
+import * as Haptics from "../lib/expo-haptics"
 import { Image, Text, useColorScheme, View } from "react-native";
 
 import { icons, useDynamicAppIcon } from "./DynamicIconContext";
 import TouchableBounce from "./TouchableBounce.native";
 
-import { Slate } from "@/constants/Colors";
+import { Slate } from "../constants/Colors";
 import { SF } from "./sf-symbol";
 
 export default function App() {

@@ -8,7 +8,7 @@ import Item from "./Item";
 import Separator from "./Separator";
 import UserCell from "./UserCell";
 
-import { Slate } from "@/constants/Colors";
+import { Slate } from "../../constants/Colors";
 
 interface ListProps {
   style?: StyleProp<ViewStyle>;
@@ -50,8 +50,8 @@ const List: FC<ListProps> = ({
   const footerComponent = noMore
     ? null
     : (footerProps) => (
-        <Footer {...footerProps} item={userItem} onPress={onPressFooter} />
-      );
+      <Footer {...footerProps} item={userItem} onPress={onPressFooter} />
+    );
 
   const keyExtractor = (item: any, index: number) => `item-${index}`; // replace any with a more specific type if possible
 

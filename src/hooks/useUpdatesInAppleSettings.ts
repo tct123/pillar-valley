@@ -3,7 +3,7 @@ import * as Application from "expo-application";
 import React from "react";
 
 // import { UPDATES_API_KEYS } from "@/apple-settings-x/shared";
-import { Settings } from "@/lib/Settings";
+import { Settings } from "../lib/Settings";
 
 function displayDate() {
   return new Date().toLocaleString("en-US", {

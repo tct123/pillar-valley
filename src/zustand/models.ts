@@ -1,14 +1,14 @@
-import "@/runtime/local-storage";
+import "../runtime/local-storage"
 
 import { ExtensionStorage } from "@bacons/apple-targets";
 import { useEffect } from "react";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-import GameStates from "@/Game/GameStates";
-import Challenges from "@/constants/Achievements";
-import { logEvent } from "@/lib/Analytics";
-import { Settings } from "@/lib/Settings";
+import GameStates from "../Game/GameStates";
+import Challenges from "../constants/Achievements";
+import { logEvent } from "../lib/Analytics";
+import { Settings } from "../lib/Settings";
 
 const extStorage = new ExtensionStorage("group.bacon.data");
 
