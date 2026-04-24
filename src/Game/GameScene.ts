@@ -23,7 +23,7 @@ export default class GameScene extends THREE.Scene {
 
   // The animated top-of-sky color, exposed to the TSL graph as a uniform so
   // we can mutate it in place from JS without rebuilding shaders.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   private topColorUniform: any;
 
   constructor() {
