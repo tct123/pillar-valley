@@ -4,9 +4,9 @@ import React from "react";
 import { SectionList, StyleSheet, Text, View } from "react-native";
 import { ScrollView, TouchableHighlight } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import unstable_styles from "./custom-list.module.css";
+import unstable_styles from "../../custom-list.module.css";
 
-import { Slate } from "@/constants/Colors";
+import { Slate } from "../constants/Colors";
 import { SF } from "./sf-symbol";
 
 function ActionTypeIcon({ type }: { type: "internal" | "external" }) {

@@ -2,7 +2,7 @@ import Constants, { ExecutionEnvironment } from "expo-constants";
 import * as AppIcon from "expo-quick-actions/icon";
 import React from "react";
 
-import { logEvent } from "@/lib/Analytics";
+import { logEvent } from "../lib/Analytics";
 
 export const icons = [
   {
@@ -43,7 +43,7 @@ const DynamicIconContext = React.createContext<{
   setIconName: (iconName: string | null) => void;
 }>({
   iconName: null,
-  setIconName: () => {},
+  setIconName: () => { },
 });
 
 export default function DynamicIconProvider({

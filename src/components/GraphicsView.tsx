@@ -10,7 +10,7 @@ import { Canvas, type CanvasRef, type RNCanvasContext } from "react-native-wgpu"
 import * as THREE from "three";
 import type { Renderer } from "three/webgpu";
 
-import { makeWebGPURenderer } from "@/lib/webgpu-renderer";
+import { makeWebGPURenderer } from "../lib/webgpu-renderer";
 
 export type ResizeEvent = {
   x: number;
