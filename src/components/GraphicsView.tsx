@@ -111,8 +111,8 @@ export default class GraphicsView extends React.Component<Props> {
     );
 
     const scale = PixelRatio.get();
-    const width = this.layoutWidth || (ctx.canvas as any).width / scale;
-    const height = this.layoutHeight || (ctx.canvas as any).height / scale;
+    const width = this.layoutWidth || (ctx?.canvas as any).width / scale;
+    const height = this.layoutHeight || (ctx?.canvas as any).height / scale;
 
     const renderer = makeWebGPURenderer(ctx);
     renderer.setPixelRatio(scale);

@@ -86,9 +86,9 @@ const AnimatedCircle = forwardRef((props: AnimatedCircleProps, ref) => {
   const animatedStyle = {
     backgroundColor: containerAnimation
       ? containerAnimation.interpolate({
-          inputRange: [0, 1],
-          outputRange: [innerColor, toColor || innerColor],
-        })
+        inputRange: [0, 1],
+        outputRange: [innerColor, toColor || innerColor],
+      })
       : innerColor,
     transform: [{ scale: animation }],
   };

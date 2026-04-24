@@ -1,9 +1,9 @@
 import Head from "expo-router/head";
 import * as React from "react";
 
-import { CustomList } from "@/components/CustomList";
+import { CustomList } from "../../components/CustomList";
 
-import Data from "@/constants/Licenses";
+import Data from "../../constants/Licenses";
 
 function sortDataByKey(data: typeof Data, key: string) {
   data.sort((a, b) => (a[key] > b[key] ? 1 : b[key] > a[key] ? -1 : 0));
@@ -72,7 +72,7 @@ export default function Licenses() {
               href: curr.licenseUrl.startsWith("http")
                 ? curr.licenseUrl
                 : "https://github.com/" +
-                  curr.licenseUrl.replace(/^github:/gi, ""),
+                curr.licenseUrl.replace(/^github:/gi, ""),
             };
 
             const section = prev.find((section) => section.title === username);

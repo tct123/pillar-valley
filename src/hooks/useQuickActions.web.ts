@@ -1,2 +1,2 @@
 // noop on web
-export function useDynamicQuickActions() {}
+export function useDynamicQuickActions() { }

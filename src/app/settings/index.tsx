@@ -8,25 +8,25 @@ import { Alert, Image, Linking, Platform } from "react-native";
 import {
   getOtherPlatform,
   openOtherPlatform,
-} from "@/components/Button/SwapPlatformButton";
-import { CustomList, LeftIconWrapper } from "@/components/CustomList";
-import { useSelectedIconSource } from "@/components/DynamicIconContext";
-import Android from "@/components/svg/android";
-import AppStoreSvg from "@/components/svg/app-store";
-import Apple from "@/components/svg/apple";
-import BrowserSvg from "@/components/svg/browser";
-import ExpoSvg from "@/components/svg/expo";
-import GitHubSvg from "@/components/svg/github";
-import InstagramSvg from "@/components/svg/instagram";
-import XSvg from "@/components/svg/x";
-import { Slate } from "@/constants/Colors";
-import useStoreReview from "@/hooks/useStoreReview";
+} from "../../components/Button/SwapPlatformButton";
+import { CustomList, LeftIconWrapper } from "../../components/CustomList";
+import { useSelectedIconSource } from "../../components/DynamicIconContext";
+import Android from "../../components/svg/android";
+import AppStoreSvg from "../../components/svg/app-store";
+import Apple from "../../components/svg/apple";
+import BrowserSvg from "../../components/svg/browser";
+import ExpoSvg from "../../components/svg/expo";
+import GitHubSvg from "../../components/svg/github";
+import InstagramSvg from "../../components/svg/instagram";
+import XSvg from "../../components/svg/x";
+import { Slate } from "../../constants/Colors";
+import useStoreReview from "../../hooks/useStoreReview";
 import {
   useAchievements,
   useCurrency,
   useRounds,
   useScore,
-} from "@/zustand/models";
+} from "../../zustand/models";
 import * as AppIcon from "expo-quick-actions/icon";
 
 function areYouSureAsync(): Promise<boolean> {

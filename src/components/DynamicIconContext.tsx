@@ -25,5 +25,5 @@ export function useDynamicAppIcon(): [
   string | null,
   (iconName: string | null) => void
 ] {
-  return [null, () => {}];
+  return [null, () => { }];
 }

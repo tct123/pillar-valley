@@ -2,10 +2,10 @@ import { connectActionSheet } from "@expo/react-native-action-sheet";
 import Head from "expo-router/head";
 import React from "react";
 
-import AchievementsItem from "@/components/AchievementsItem";
-import List from "@/components/List";
-import Challenges from "@/constants/Achievements";
-import { useAchievements } from "@/zustand/models";
+import AchievementsItem from "../components/AchievementsItem";
+import List from "../components/List";
+import Challenges from "../constants/Achievements";
+import { useAchievements } from "../zustand/models";
 
 const challengesListData = Object.keys(Challenges).map((key) => ({
   key,
@@ -56,7 +56,7 @@ function AchievementScreen({ showActionSheetWithOptions }) {
         noMore
         renderItem={({ item: { key, ...item }, index }) => (
           <AchievementsItem
-            onPress={() => {}}
+            onPress={() => { }}
             {...item}
             index={index}
             complete={achievements[key]}
@@ -66,9 +66,9 @@ function AchievementScreen({ showActionSheetWithOptions }) {
         headerButtonTitle={`Showing ${filter}`}
         data={data}
         renderUserItem={(props) => null}
-        onPress={() => {}}
+        onPress={() => { }}
         onPressHeader={_onOpenActionSheet}
-        onPressFooter={() => {}}
+        onPressFooter={() => { }}
       />
     </>
   );

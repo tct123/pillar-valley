@@ -8,7 +8,7 @@ interface TouchableViewProps extends ViewProps {
 }
 
 const TouchableView: React.FC<TouchableViewProps> = ({
-  onTouchesBegan = () => {},
+  onTouchesBegan = () => { },
   onStartShouldSetPanResponderCapture = () => true,
   children,
   ...props

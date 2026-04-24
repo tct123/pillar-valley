@@ -57,7 +57,7 @@ export const InstallBanner = React.forwardRef(function InstallBanner(
       ref={ref}
       name="apple-itunes-app"
       content={content.join(", ")}
-      // content={`app-id=${id}, app-argument=${url}`}
+    // content={`app-id=${id}, app-argument=${url}`}
     />
   );
 });

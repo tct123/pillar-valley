@@ -1,4 +1,4 @@
-import * as Haptics from "@/lib/expo-haptics";
+import * as Haptics from "../../lib/expo-haptics";
 import { MeshPhongMaterial } from "three";
 
 import Gem from "./Gem";

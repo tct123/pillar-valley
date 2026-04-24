@@ -1,1 +1,1 @@
-export { default } from "@/components/IconPicker";
+export { default } from "../../components/IconPicker";

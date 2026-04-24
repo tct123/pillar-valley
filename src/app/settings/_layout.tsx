@@ -1,9 +1,9 @@
 import { router, SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 
-import TouchableBounce from "@/components/TouchableBounce";
-import { Slate } from "@/constants/Colors";
-import { SF } from "@/components/sf-symbol";
+import TouchableBounce from "../../components/TouchableBounce";
+import { Slate } from "../../constants/Colors";
+import { SF } from "../../components/sf-symbol";
 import { isGlassEffectAPIAvailable } from "expo-glass-effect";
 
 export const unstable_settings = {

@@ -1,1 +1,1 @@
-export function useUpdatedUpdatesInfoInSettings() {}
+export function useUpdatedUpdatesInfoInSettings() { }

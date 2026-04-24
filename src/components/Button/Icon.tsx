@@ -1,5 +1,5 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import * as Haptics from "@/lib/expo-haptics";
+import * as Haptics from "../../lib/expo-haptics";
 import React from "react";
 import { Platform, StyleSheet } from "react-native";
 
@@ -9,7 +9,7 @@ import { SF } from "../sf-symbol";
 
 export default function Icon({
   onPressIn,
-  onPress = () => {},
+  onPress = () => { },
   size = 24,
   color = "#fff",
   name,

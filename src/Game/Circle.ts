@@ -51,7 +51,7 @@ class CircleMesh extends AlphaMesh {
     this.alpha = 0.45;
   };
 
-  update = () => {};
+  update = () => { };
 }
 
 export default CircleMesh;

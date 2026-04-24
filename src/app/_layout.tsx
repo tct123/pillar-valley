@@ -12,15 +12,15 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { Slate } from "../constants/Colors";
 
-import AudioManager from "@/AudioManager";
+import AudioManager from "../AudioManager";
 // import Fire from "@/ExpoParty/Fire";
-import DynamicIconProvider from "@/components/DynamicIconContext";
-import TouchableBounce from "@/components/TouchableBounce";
-import { useDynamicQuickActions } from "@/hooks/useQuickActions";
-import { useUpdatedUpdatesInfoInSettings } from "@/hooks/useUpdatesInAppleSettings";
-import { logEvent } from "@/lib/Analytics";
-import { useSyncGlobalAudioWithSettings } from "@/zustand/models";
-import { SF } from "@/components/sf-symbol";
+import DynamicIconProvider from "../components/DynamicIconContext";
+import TouchableBounce from "../components/TouchableBounce";
+import { useDynamicQuickActions } from "../hooks/useQuickActions";
+import { useUpdatedUpdatesInfoInSettings } from "../hooks/useUpdatesInAppleSettings";
+import { logEvent } from "../lib/Analytics";
+import { useSyncGlobalAudioWithSettings } from "../zustand/models";
+import { SF } from "../components/sf-symbol";
 import { isGlassEffectAPIAvailable } from "expo-glass-effect";
 
 if (process.env.EXPO_OS !== "web") {

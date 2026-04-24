@@ -1,4 +1,4 @@
-import * as Haptics from "@/lib/expo-haptics";
+import * as Haptics from "../lib/expo-haptics";
 
 import * as THREE from "three";
 import { DirectionalLight, HemisphereLight } from "three";
@@ -21,7 +21,7 @@ import {
   useScore,
 } from "../zustand/models";
 
-import { logEvent } from "@/lib/Analytics";
+import { logEvent } from "../lib/Analytics";
 
 function distance(
   p1: { x: number; z: number },

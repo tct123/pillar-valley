@@ -17,7 +17,7 @@ export class ReactNativeCanvas {
   // with "Cannot set properties of undefined (setting 'width')".
   style: Record<string, unknown> = {};
 
-  constructor(private canvas: NativeCanvas) {}
+  constructor(private canvas: NativeCanvas) { }
 
   get width() {
     return this.canvas.width;
@@ -44,11 +44,11 @@ export class ReactNativeCanvas {
     this.canvas.height = height;
   }
 
-  addEventListener(_type: string, _listener: EventListener) {}
-  removeEventListener(_type: string, _listener: EventListener) {}
-  dispatchEvent(_event: Event) {}
-  setPointerCapture() {}
-  releasePointerCapture() {}
+  addEventListener(_type: string, _listener: EventListener) { }
+  removeEventListener(_type: string, _listener: EventListener) { }
+  dispatchEvent(_event: Event) { }
+  setPointerCapture() { }
+  releasePointerCapture() { }
 }
 
 export const makeWebGPURenderer = (

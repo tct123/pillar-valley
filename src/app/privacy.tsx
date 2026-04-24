@@ -1,4 +1,4 @@
-import PrivacyPolicy from "@/components/Privacy";
+import PrivacyPolicy from "../components/Privacy";
 import { Stack } from "expo-router";
 import Head from "expo-router/head";
 import { Platform } from "react-native";
